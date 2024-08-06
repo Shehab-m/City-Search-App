@@ -1,5 +1,7 @@
 package com.agb.citysearchapp.domain.repository
 
-interface ICitiesRepository {
+import com.agb.citysearchapp.data.model.CityDataModel
 
+interface ICitiesRepository {
+    suspend fun getCities(): List<CityDataModel>
 }
