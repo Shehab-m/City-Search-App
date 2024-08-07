@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">City Search App</string>
+    <string name="world_cities">World Cities</string>
 </resources>

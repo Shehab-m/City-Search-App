@@ -1,10 +1,12 @@
 package com.agb.citysearchapp.presentation.cities
 
+import android.content.Context
 import android.util.Log
 import com.agb.citysearchapp.domain.model.City
 import com.agb.citysearchapp.domain.usecase.GetCitiesUseCase
 import com.agb.citysearchapp.presentation.base.BaseViewModel
 import com.agb.citysearchapp.presentation.cities.mapper.toUIState
+import com.agb.citysearchapp.presentation.util.MapUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -37,6 +39,10 @@ class CitiesViewModel @Inject constructor(
 
     override fun onClickTryAgain() {
         getCities()
+    }
+
+    override fun openCityLocation(context: Context, latitude: Double, longitude: Double) {
+        MapUtils.openLocationInMaps(context, latitude, longitude)
     }
 
 }
