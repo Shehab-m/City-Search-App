@@ -9,17 +9,22 @@ import androidx.compose.ui.unit.sp
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = robotoFont,
-        fontWeight = FontWeight.W700,
+        fontWeight = FontWeight.W500,
         fontSize = 14.sp,
     ),
     bodyMedium = TextStyle(
         fontFamily = robotoFont,
-        fontWeight = FontWeight.W700,
+        fontWeight = FontWeight.W500,
         fontSize = 12.sp,
     ),
     bodySmall = TextStyle(
         fontFamily = robotoFont,
-        fontWeight = FontWeight.W600,
+        fontWeight = FontWeight.W500,
         fontSize = 10.sp,
+    ),
+    titleLarge = TextStyle(
+        fontFamily = robotoFont,
+        fontWeight = FontWeight.W600,
+        fontSize = 18.sp,
     ),
 )

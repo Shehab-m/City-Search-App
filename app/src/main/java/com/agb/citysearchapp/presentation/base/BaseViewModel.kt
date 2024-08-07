@@ -24,6 +24,17 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel(), BaseInteracti
     protected val _effect = MutableSharedFlow<E?>()
     val effect = _effect.asSharedFlow().mapNotNull { it }
 
+    /**
+     * Executes a suspend function and handles success and error functions.
+     *
+     * It handles the result using the provided onSuccess and onError callbacks.
+     *
+     * @param function The suspend function to execute.
+     * @param onSuccess Callback to handle the result of the function on success.
+     * @param onError Callback to handle exceptions that occur during execution.
+     * @param inScope The CoroutineScope in which to run the function, defaults to viewModelScope.
+     * @return A Job representing the coroutine.
+     */
     protected fun <T> tryToExecute(
         function: suspend () -> T,
         onSuccess: (T) -> Unit,
@@ -47,6 +58,19 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel(), BaseInteracti
         }
     }
 
+    /**
+     * Executes a suspend function with error handling.
+     *
+     * It runs the provided suspend function within the specified CoroutineScope and dispatcher.
+     * It catches exceptions that occur during the execution and handles them using the onError callback.
+     * Specific exception types (IOException, IllegalArgumentException) are logged and passed to the onError callback.
+     *
+     * @param onError Callback to handle exceptions that occur during execution.
+     * @param inScope The CoroutineScope in which to run the function, defaults to viewModelScope.
+     * @param dispatcher The CoroutineDispatcher to use for the coroutine, defaults to Dispatchers.IO.
+     * @param function The suspend function to execute.
+     * @return A Job representing the coroutine.
+     */
     private fun runWithErrorCheck(
         onError: (Exception) -> Unit,
         inScope: CoroutineScope = viewModelScope,
@@ -75,7 +99,5 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel(), BaseInteracti
             }
         }
     }
-
-
 
 }

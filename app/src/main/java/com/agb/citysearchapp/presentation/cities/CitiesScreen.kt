@@ -1,15 +1,29 @@
 package com.agb.citysearchapp.presentation.cities
 
 import android.annotation.SuppressLint
+import android.util.Log
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.agb.citysearchapp.presentation.base.EventHandler
+import com.agb.citysearchapp.presentation.cities.composable.KItemCity
+import com.agb.citysearchapp.presentation.composable.KAnimationContent
+import com.agb.citysearchapp.presentation.composable.KSearchField
+import com.agb.citysearchapp.presentation.composable.KTopBar
+import com.agb.citysearchapp.presentation.composable.Loading
 
 @Composable
 fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
@@ -23,13 +37,52 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
     CitiesContent(state, viewModel)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CitiesContent(
     state: CitiesUiState, listener: CitiesInteractionListener
 ) {
+    val context = LocalContext.current
     Scaffold { paddingValues ->
-
+        KAnimationContent(
+            state = state.isLoading,
+            topBar = {
+                KTopBar(title = "World Cities", paddingValues = paddingValues)
+                KSearchField(
+                    modifier = Modifier.padding(
+                        top = 8.dp,
+                        bottom = 16.dp,
+                        end = 20.dp,
+                        start = 20.dp
+                    ),
+                    value = "",
+                    onValueChange = {}
+                )
+            },
+            content = {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 20.dp),
+                ) {
+                    items(state.cities) { city ->
+                        Log.d("Cities: ", city.toString())
+                        KItemCity(
+                            modifier = Modifier,
+                            city = city,
+                            onClick = { }
+                        )
+                    }
+                }
+            },
+            loadingContent = {
+                Loading(state = true)
+            },
+            isError = state.isError,
+            onClickTryAgain = {
+                listener.onClickTryAgain()
+            }
+        )
     }
 }
 
@@ -40,7 +93,9 @@ fun CitiesScreenPreview() {
         CitiesContent(
             state = CitiesUiState(),
             listener = object : CitiesInteractionListener {
+                override fun onClickTryAgain() {
 
+                }
             }
         )
     }

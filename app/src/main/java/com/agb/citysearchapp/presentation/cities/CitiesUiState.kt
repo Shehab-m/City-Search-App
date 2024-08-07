@@ -1,10 +1,9 @@
 package com.agb.citysearchapp.presentation.cities
 
-import com.agb.citysearchapp.domain.model.City
-
 data class CitiesUiState(
     val isLoading: Boolean = false,
-    val cities: List<City> = emptyList()
+    val isError: Boolean = false,
+    val cities: List<CityUIState> = emptyList()
 )
 
 data class CityUIState(
