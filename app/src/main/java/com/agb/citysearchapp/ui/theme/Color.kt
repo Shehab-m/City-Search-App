@@ -8,12 +8,14 @@ val DarkGrey = Color(0xFF838C95)
 val White = Color(0xFFFFFFFF)
 val Shade = Color(0xFF000C1A)
 val LightGrey = Color(0xFFEFF0F2)
+val Red = Color(0xBEFF0000)
 
 val LightColors = lightColorScheme(
     primary = Blue,
     secondary = Shade,
     onPrimary = White,
-    tertiary = DarkGrey,
-    onTertiary = LightGrey,
+    tertiary = LightGrey,
+    onTertiary = DarkGrey,
     background = White,
+    onError = Red
 )

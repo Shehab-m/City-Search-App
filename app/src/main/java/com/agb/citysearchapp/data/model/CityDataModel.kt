@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName
 
 data class CityDataModel(
     @SerializedName("country")
-    val country: String,
+    val country: String?,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("_id")
-    val id: Int,
+    val id: Int?,
     @SerializedName("coord")
-    val coordinates: CoordinatesDataModel
+    val coordinates: CoordinatesDataModel?
 )
 
