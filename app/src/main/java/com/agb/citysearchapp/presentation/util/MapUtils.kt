@@ -9,6 +9,7 @@ import android.util.Log
 object MapUtils {
     private const val MAPS_PACKAGE = "com.google.android.apps.maps"
     private const val MAPS_URI = "geo"
+    private const val MAPS_BROWSER_URI = "https://www.google.com/maps?q="
 
     /**
      * Opens Google Maps with the specified latitude and longitude coordinates.
@@ -31,10 +32,29 @@ object MapUtils {
             try {
                 context.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
+                openLocationInWebBrowser(context, latitude, longitude)
                 Log.e("LocationIntent", "No application found to handle the intent", e)
             }
         } else {
             Log.e("LocationIntent", "No application found to handle the intent")
+            openLocationInWebBrowser(context, latitude, longitude)
+        }
+    }
+
+    /**
+     * Opens a location in a web browser using Google Maps.
+     *
+     * @param context The context from which the activity is started.
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     */
+    private fun openLocationInWebBrowser(context: Context, latitude: Double, longitude: Double) {
+        try {
+            val uri = Uri.parse("$MAPS_BROWSER_URI$latitude,$longitude")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            Log.e("LocationIntent", "Failed to start activity for location", e)
         }
     }
 

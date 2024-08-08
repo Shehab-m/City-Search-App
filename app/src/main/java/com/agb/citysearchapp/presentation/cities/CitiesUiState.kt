@@ -1,9 +1,14 @@
 package com.agb.citysearchapp.presentation.cities
 
+import kotlinx.coroutines.flow.MutableStateFlow
+
 data class CitiesUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val cities: List<CityUIState> = emptyList()
+    val searchInput: MutableStateFlow<String> = MutableStateFlow(""),
+    val showingCities: List<CityUIState> = emptyList(),
+    val cities: List<CityUIState> = emptyList(),
+    val isSearchEnabled: Boolean = true
 )
 
 data class CityUIState(
