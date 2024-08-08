@@ -14,9 +14,11 @@ object MapUtils {
     /**
      * Opens Google Maps with the specified latitude and longitude coordinates.
      *
-     * Uses a geo URI to open the location in Google Maps and starts an activity with the intent.
-     * Checks to ensure there is an application available to handle the intent
-     * and handles cases where no suitable application is found.
+     * This method uses a geo URI to open the location in Google Maps and starts an activity with the intent.
+     * It includes a check to ensure that there is an application available to handle the intent,
+     * specifically addressing compatibility with older Android versions where such functionality
+     * may not be supported. If no suitable application is found, the method gracefully handles this
+     * scenario to prevent crashes.
      *
      * @param context The context from which the intent will be started.
      * @param latitude The latitude coordinate of the location to display.

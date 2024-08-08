@@ -3,7 +3,33 @@ package com.agb.citysearchapp.data.datastructure
 import com.agb.citysearchapp.domain.model.City
 
 /**
- * A Trie data structure specialized for handling city names.
+ * Trie data structure for efficient prefix-based city name searches.
+ *
+ * This Trie (prefix tree) is optimized for scenarios where rapid retrieval of cities
+ * based on the starting characters of their names is required. Unlike a linear search,
+ * which examines each city name sequentially, the Trie organizes the data hierarchically,
+ * allowing for quick access to all city names sharing a common prefix.
+ *
+ * ## Why Trie is More Efficient Than Linear Search:
+ *
+ * 1. **Prefix-Based Search**:
+ *    - In linear search, checking each city's name individually results in a time complexity
+ *      of O(n) for n city names. This approach can be slow for large datasets.
+ *    - The Trie, allows direct traversal from the root to the end of the prefix
+ *      in O(m) time, where m is the length of the prefix. Once at the prefix node, all matching
+ *      cities can be retrieved directly from its subtree, making it faster than a linear search.
+ *
+ * 2. **Space-Time Trade-off**:
+ *    - While the Trie consume more memory due to the additional nodes, it compensates
+ *      by reducing the time complexity for searching. The hierarchical structure eliminates
+ *      the need to repeatedly check each character in the city names against the prefix, as done
+ *      in a linear search.
+ *
+ * 3. **Scalability**:
+ *    - As the dataset grows, the Trie continues to offer efficient searches, whereas the
+ *      performance of a linear search degrades proportionally to the size of the dataset.
+ *    - This makes the Trie suited for handling large lists of cities, such as
+ *      the 200k entries provided in this assignment.
  *
  * Implements the ITrieCity interface to support insertion and search operations.
  */
