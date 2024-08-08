@@ -28,17 +28,22 @@ import com.agb.citysearchapp.ui.theme.dimens
 /**
  * A customizable search field composable designed for enhanced UX.
  *
- * @param modifier Modifier to customize the appearance and layout.
- * @param onValueChange Lambda to handle text change events.
- * @param value Initial text value.
- * @param containerColor Background color of the text field.
- * @param borderColor Border color of the text field.
- * @param textColor Color of the text inside the field.
- * @param placeHolder Placeholder text for the field.
- * @param textStyle Style for the text inside the field.
- * @param singleLine Boolean to indicate if the field is single line.
  *
- * Designed for a responsive and visually appealing search input experience.
+ * @param modifier Modifier to customize the appearance and layout of the search field.
+ * @param onValueChange Lambda to handle text change events.
+ * @param value Initial text value of the search field.
+ * @param containerColor Background color of the search field container.
+ * @param borderColor Border color of the search field.
+ * @param textColor Color of the text inside the search field.
+ * @param placeHolder Placeholder text to be shown when the field is empty.
+ * @param placeHolderColor Color of the placeholder text.
+ * @param leadingIconColor Color of the leading icon.
+ * @param textStyle Style applied to the text inside the search field.
+ * @param singleLine Boolean indicating if the search field should be single-line.
+ * @param enabled Boolean indicating if the search field is enabled or disabled.
+ *
+ * Designed for a responsive and visually appealing search input experience with customizable
+ * styling options to suit various design requirements.
  */
 @Composable
 fun KSearchField(
@@ -49,11 +54,15 @@ fun KSearchField(
     containerColor: Color = MaterialTheme.colorScheme.tertiary,
     borderColor: Color = MaterialTheme.colorScheme.tertiary,
     textColor: Color = MaterialTheme.colorScheme.secondary,
+    placeHolderColor: Color =  MaterialTheme.colorScheme.onTertiary,
+    leadingIconColor: Color = MaterialTheme.colorScheme.primary,
     placeHolder: String = "Search",
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
-    singleLine: Boolean = true
+    singleLine: Boolean = true,
+    enabled: Boolean = true,
 ) {
     var fieldText by remember(value) { mutableStateOf(value) }
+    val alpha = 0.5f
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
         textStyle = textStyle.copy(fontWeight = FontWeight(400)),
@@ -61,10 +70,18 @@ fun KSearchField(
             focusedContainerColor = containerColor,
             focusedTextColor = textColor,
             focusedIndicatorColor = borderColor,
+            focusedPlaceholderColor = placeHolderColor,
+            focusedLeadingIconColor = leadingIconColor,
             unfocusedContainerColor = containerColor,
             unfocusedIndicatorColor = borderColor,
+            unfocusedPlaceholderColor = placeHolderColor,
             unfocusedTextColor = textColor,
+            unfocusedLeadingIconColor = leadingIconColor,
             cursorColor = textColor,
+            disabledContainerColor = containerColor.copy(alpha = alpha),
+            disabledIndicatorColor = borderColor.copy(alpha = alpha),
+            disabledLeadingIconColor = leadingIconColor.copy(alpha = alpha),
+            disabledPlaceholderColor = placeHolderColor.copy(alpha = alpha),
         ),
         shape = RoundedCornerShape(24.dp),
         value = fieldText,
@@ -77,17 +94,16 @@ fun KSearchField(
                 modifier = Modifier.size(36.dp),
                 painter = painterResource(id = R.drawable.search_icon),
                 contentDescription = "Search icon",
-                tint = MaterialTheme.colorScheme.primary
             )
         },
         placeholder = {
             Text(
                 text = placeHolder,
-                color = MaterialTheme.colorScheme.onTertiary,
                 style = MaterialTheme.typography.bodyLarge
             )
         },
-        singleLine = singleLine
+        singleLine = singleLine,
+        enabled = enabled
     )
 }
 

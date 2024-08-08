@@ -40,7 +40,7 @@ fun CitiesScreen(viewModel: CitiesViewModel = hiltViewModel()) {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
 @Composable
 fun CitiesContent(
     state: CitiesUiState, listener: CitiesInteractionListener
@@ -49,15 +49,20 @@ fun CitiesContent(
     Scaffold { paddingValues ->
         KAnimationContent(state = state.isLoading, topBar = {
             KTopBar(title = stringResource(R.string.world_cities), paddingValues = paddingValues)
-            KSearchField(modifier = Modifier.padding(
-                top = 8.dp, bottom = 16.dp, end = 20.dp, start = 20.dp
-            ), value = "", onValueChange = {})
+            KSearchField(
+                modifier = Modifier.padding(top = 8.dp, bottom = 16.dp, end = 20.dp, start = 20.dp),
+                value = state.searchInput.value,
+                onValueChange = {
+                    listener.onSearchQueryChanged(it)
+                },
+                enabled = state.isSearchEnabled
+            )
         }, content = {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(horizontal = 20.dp),
             ) {
-                items(state.cities) { city ->
+                items(state.showingCities) { city ->
                     KItemCity(
                         modifier = Modifier,
                         city = city,
@@ -92,6 +97,7 @@ fun CitiesScreenPreview() {
                     longitude: Double
                 ) {
                 }
+                override fun onSearchQueryChanged(query: String) {}
             }
         )
     }
