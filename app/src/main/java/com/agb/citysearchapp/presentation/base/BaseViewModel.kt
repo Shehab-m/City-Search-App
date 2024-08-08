@@ -7,10 +7,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -91,11 +93,36 @@ abstract class BaseViewModel<S, E>(initialState: S) : ViewModel(), BaseInteracti
                         Log.d("IllegalException", "${exception.message}")
                         onError(exception)
                     }
+
                     else -> {
                         Log.d("UnknownException", "${exception.message}")
                         onError(exception)
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Collects values from a [Flow] and updates the ViewModel state accordingly.
+     *
+     * Collects the latest values emitted by the provided [Flow]
+     * and applies given [updateState] lambda function to update the state
+     * of the ViewModel. And runs in the ViewModel's scope to ensure proper
+     * lifecycle management.
+     *
+     * @param flow The [Flow] to collect values from.
+     * @param updateState A lambda function that defines how to update the state
+     * with the collected value. It takes the current state and
+     * the collected value as parameters and returns the new state.
+     */
+    protected fun <T> collectFlow(
+        flow: Flow<T>,
+        updateState: S.(T) -> S
+    ) {
+        viewModelScope.launch {
+            flow.collectLatest { value ->
+                _state.update { it.updateState(value) }
             }
         }
     }

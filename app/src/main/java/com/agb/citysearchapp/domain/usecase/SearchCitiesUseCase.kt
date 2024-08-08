@@ -4,22 +4,23 @@ import com.agb.citysearchapp.domain.model.City
 import com.agb.citysearchapp.domain.repository.ICitiesRepository
 import javax.inject.Inject
 
-class GetCitiesUseCase @Inject constructor(
+class SearchCitiesUseCase @Inject constructor(
     private val repository: ICitiesRepository
 ) {
+
     /**
-     * Initializes the Trie data structure with a list of cities and returns a sorted list of cities.
+     * Searches for cities that match the given prefix and returns them in alphabetical order.
      *
-     * This suspend function retrieves a list of cities from the repository, initializes the Trie
-     * data structure with these cities for efficient prefix-based searching, and returns the
-     * sorted list of cities. The sorting is performed by the `getSortedCities` function, which ensures
-     * that cities are listed alphabetically by city name first and then by country.
+     * Searches using Trie data structure to efficiently search for cities that start
+     * with the provided prefix. The search results are then sorted alphabetically, first by city
+     * name and then by country code if there are multiple cities with the same name.
      *
-     * @return A list of cities sorted alphabetically by city name and country.
+     * @param prefix The prefix string used to filter cities in the Trie.
+     * @return A list of cities that match the given prefix, sorted alphabetically by city name
+     * and country code.
      */
-    suspend operator fun invoke(): List<City> {
-        val cities = repository.getCities()
-        repository.initializeTriCities(cities)
+    operator fun invoke(prefix: String): List<City> {
+        val cities = repository.searchCities(prefix)
         return getSortedCities(cities)
     }
 
@@ -37,5 +38,4 @@ class GetCitiesUseCase @Inject constructor(
     private fun getSortedCities(cities: List<City>): List<City> {
         return cities.sortedWith(compareBy({ it.name.lowercase() }, { it.country.lowercase() }))
     }
-
 }
