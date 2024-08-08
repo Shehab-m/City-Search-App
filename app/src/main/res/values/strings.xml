@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">City Search App</string>
     <string name="world_cities">World Cities</string>
+    <string name="placeholder_image">Placeholder Image</string>
+    <string name="no_cities_found">No Cities Found</string>
+    <string name="error_message">An error occurred. Please try again later</string>
 </resources>
