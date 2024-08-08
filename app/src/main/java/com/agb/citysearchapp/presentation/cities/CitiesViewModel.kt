@@ -77,6 +77,7 @@ class CitiesViewModel @Inject constructor(
 
     private fun onError(error: Exception) {
         updateState { it.copy(isError = true, isLoading = false) }
+        sendEffect(CitiesUiEffect.ShowErrorToast)
         Log.e("TAG", "onError: ${error.message} ")
     }
 
